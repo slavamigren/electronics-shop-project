@@ -23,3 +23,19 @@ def test_item_apply_discoun(keyboard):
     keyboard.apply_discount()
     assert keyboard.price == 4000
 
+
+def test_name_setter(keyboard):
+    assert keyboard.name == 'keyboard'
+    keyboard.name = 'keyboardSuperPuper'
+    assert keyboard.name == 'keyboardSu'
+
+
+def test_instantiate_from_csv(keyboard):
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 6
+
+
+def test_string_to_number(keyboard):
+    assert keyboard.string_to_number('5') == 5
+    assert keyboard.string_to_number('5.0') == 5
+    assert keyboard.string_to_number('5.5') == 5
