@@ -47,3 +47,7 @@ def test__repr__(keyboard):
 
 def test__str__(keyboard):
     assert str(keyboard) == 'keyboard'
+
+
+def test__add__(keyboard):
+    assert keyboard + keyboard == 20

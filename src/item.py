@@ -9,13 +9,7 @@ class Item:
     all = []
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
-        """
-        Создание экземпляра класса item.
-
-        :param name: Название товара.
-        :param price: Цена за единицу товара.
-        :param quantity: Количество товара в магазине.
-        """
+        """Создание экземпляра класса item."""
         self._name = name
         self.price = price
         self.quantity = quantity
@@ -33,11 +27,13 @@ class Item:
 
     @staticmethod
     def string_to_number(string):
+        """переводит str в int, обрезая дробную часть"""
         return int(float(string))
 
 
     @classmethod
     def instantiate_from_csv(cls):
+        """загружает из файла список товаров"""
         with open('../src/items.csv') as file:
             items = csv.DictReader(file)
             for item in items:
@@ -52,12 +48,14 @@ class Item:
         return self.name
 
 
-    def calculate_total_price(self) -> float:
-        """
-        Рассчитывает общую стоимость конкретного товара в магазине.
+    def __add__(self, other):
+        if issubclass(other.__class__, self.__class__):
+            return self.quantity + other.quantity
+        return NotImplemented
 
-        :return: Общая стоимость товара.
-        """
+
+    def calculate_total_price(self) -> float:
+        """Рассчитывает общую стоимость конкретного товара в магазине."""
         return self.price * self.quantity
 
     def apply_discount(self) -> None:
