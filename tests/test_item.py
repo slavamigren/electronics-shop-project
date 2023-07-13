@@ -39,3 +39,11 @@ def test_string_to_number(keyboard):
     assert keyboard.string_to_number('5') == 5
     assert keyboard.string_to_number('5.0') == 5
     assert keyboard.string_to_number('5.5') == 5
+
+
+def test__repr__(keyboard):
+    assert repr(keyboard) == "Item('keyboard', 5000, 10)"
+
+
+def test__str__(keyboard):
+    assert str(keyboard) == 'keyboard'
