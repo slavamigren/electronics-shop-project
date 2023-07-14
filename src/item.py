@@ -1,4 +1,6 @@
 import csv
+import os
+from src.InstantiateCSVError import *
 
 
 class Item:
@@ -32,10 +34,26 @@ class Item:
     @classmethod
     def instantiate_from_csv(cls):
         """Загружает из файла список товаров"""
+        if not os.path.exists('../src/items.csv'):
+            raise FileNotFoundError('Отсутствует файл item.csv')
         with open('../src/items.csv') as file:
-            items = csv.DictReader(file)
-            for item in items:
-                Item(item['name'], float(item['price']), int(item['quantity']))
+            # проверка на соответствие полей в файле требуемым
+            if {'name', 'price', 'quantity'} != set(file.readline().strip().split(',')):
+                raise InstantiateCSVError
+            file.seek(0)  # проверили только первую строку с заголовком таблицы и вернули курсор в начало файла
+            # если в строках не хватает или больше полей DictReader выдаст исключение, перехватываем его
+            # и возбуждаем своё исключение
+            try:
+                items = csv.DictReader(file)
+            except:
+                raise InstantiateCSVError
+            # если в поле количества или цены будут не цифры, преобразование в int или float возбудит исключение
+            # перехватываем его и возбуждаем своё исключение
+            try:
+                for item in items:
+                    Item(item['name'], float(item['price']), int(item['quantity']))
+            except:
+                raise InstantiateCSVError
 
     def __repr__(self):
         return f"Item('{self.name}', {self.price}, {self.quantity})"

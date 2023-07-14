@@ -1,5 +1,6 @@
 import pytest
 from src.item import Item
+from src.InstantiateCSVError import *
 
 
 @pytest.fixture
@@ -51,3 +52,12 @@ def test__str__(keyboard):
 
 def test__add__(keyboard):
     assert keyboard + keyboard == 20
+
+
+def test_instantiate_from_csv_without_file(keyboard):  # запускать без файла в дирректории
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv()
+
+def test_instantiate_from_csv_bad_file(keyboard):  # запускать с повреждённым файлом
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv()
